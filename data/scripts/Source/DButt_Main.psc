@@ -8,7 +8,7 @@ DButt_Actor     Property DButtActor Auto
 
 
 float function getVersion()
-	return 2.5
+	return 2.6
 endfunction
 
 

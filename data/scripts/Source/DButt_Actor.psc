@@ -32,6 +32,7 @@ Int[] Property npc_sound5 Auto
 
 Int[] Property npc_sound_piss Auto
 
+slaUtilScr Property Aroused Auto
 
 int function getArrayCount()
   return ( npc_ref.length - 1 )
@@ -252,6 +253,20 @@ function addGas(int Slot,float amount = 0.0)
 	amount = amount * (DButtConfig.gasProductionSpeed + 1) * 0.5
 	
 	
+	if DButtConfig.dependOnWeight == true
+		float actorWeight = npc_ref[Slot].GetActorBase().GetWeight() as float
+		actorWeight = actorWeight/100
+		DButtMaintenance.log("Gas weight before amount :"+amount)
+		amount = amount*0.1 + (amount*0.9*actorWeight)
+		DButtMaintenance.log("Gas weight after amount :"+amount)
+	endif
+	if DButtConfig.dependOnArousal == true
+		float arousalWeight =  Aroused.GetActorExposure(npc_ref[Slot]) as float
+		arousalWeight = arousalWeight/100
+		DButtMaintenance.log("Gas arousal before amount :"+amount)
+		amount = amount*0.1 + (amount*0.9*arousalWeight)
+		DButtMaintenance.log("Gas arousal after amount :"+amount)
+	endif
 	
 	npc_stored[Slot] = npc_stored[Slot] + amount
 	
@@ -362,6 +377,14 @@ bool function tryToFart(int Slot,float extraProb = 0.0)
 		
 		if Utility.RandomInt(1, 100) <= DButtConfig.gurgleProb
 			DButtPlayer.playGurgle(Slot)
+			if DButtConfig.effectOnArousal == true
+				float fvalue =  Aroused.GetActorExposure(npc_ref[Slot]) as float
+				fvalue = fvalue + 2
+				if fvalue>100
+					fvalue = 100
+				endif
+				Aroused.SetActorExposure(npc_ref[Slot], fvalue as Int)
+			endif
 		endif
 		return false
 	
@@ -388,6 +411,14 @@ bool function tryToFart(int Slot,float extraProb = 0.0)
 	if DButtConfig.zad == true && npc_ref[Slot].WornHasKeyword(DButtConfig.zad_DeviousPlugAnal)
 		if  npc_stored[Slot] >= 100 && Utility.RandomInt(0,5)==0
 			DButtPlayer.playFartPlugFinal(Slot)
+			if DButtConfig.effectOnArousal == true
+				float fvalue =  Aroused.GetActorExposure(npc_ref[Slot]) as float
+				fvalue = fvalue + 20
+				if fvalue>100
+					fvalue = 100
+				endif
+				Aroused.SetActorExposure(npc_ref[Slot], fvalue as Int)
+			endif
 			npc_stored[Slot] = Utility.RandomInt(DButtConfig.gasSafeLevel as Int, (2 * DButtConfig.gasSafeLevel) as Int)
 			
 		else
@@ -400,6 +431,14 @@ bool function tryToFart(int Slot,float extraProb = 0.0)
 			DButtMaintenance.log("PLUG FART: STORED " + npc_stored[Slot])
 			if Utility.RandomInt(0, ( 100 - stored as int )* 5 ) == 0
 				DButtPlayer.playFartPlug(Slot)
+				if DButtConfig.effectOnArousal == true
+					float fvalue =  Aroused.GetActorExposure(npc_ref[Slot]) as float
+					fvalue = fvalue + 5
+					if fvalue>100
+						fvalue = 100
+					endif
+					Aroused.SetActorExposure(npc_ref[Slot], fvalue as Int)
+				endif
 			endif
 			
 		endif
@@ -409,6 +448,14 @@ bool function tryToFart(int Slot,float extraProb = 0.0)
 	if  npc_stored[Slot] >= 100
 		DButtConfig.ScanerModificator = 1.0
 		DButtPlayer.playMega(Slot)
+		if DButtConfig.effectOnArousal == true
+			float fvalue =  Aroused.GetActorExposure(npc_ref[Slot]) as float
+			fvalue = fvalue + 20
+			if fvalue>100
+				fvalue = 100
+			endif
+			Aroused.SetActorExposure(npc_ref[Slot], fvalue as Int)
+		endif
 		DButtMaintenance.log("Big")
 		npc_stored[Slot] = Utility.RandomInt(DButtConfig.gasSafeLevel as Int, (2 * DButtConfig.gasSafeLevel) as Int)
 		
@@ -419,6 +466,14 @@ bool function tryToFart(int Slot,float extraProb = 0.0)
 	
 		if rebased < part
 			DButtPlayer.playSmall(Slot)
+			if DButtConfig.effectOnArousal == true
+				float fvalue =  Aroused.GetActorExposure(npc_ref[Slot]) as float
+				fvalue = fvalue + 5
+				if fvalue>100
+					fvalue = 100
+				endif
+				Aroused.SetActorExposure(npc_ref[Slot], fvalue as Int)
+			endif
 			DButtConfig.ScanerModificator = 0.3
 			DButtMaintenance.log("Small")
 			npc_stored[Slot] =  Utility.RandomInt(0, (0.5 * DButtConfig.gasSafeLevel) as Int)
@@ -426,6 +481,14 @@ bool function tryToFart(int Slot,float extraProb = 0.0)
 	
 		if rebased >=part && rebased <part * 2
 			DButtPlayer.playMed(Slot)
+			if DButtConfig.effectOnArousal == true
+				float fvalue =  Aroused.GetActorExposure(npc_ref[Slot]) as float
+				fvalue = fvalue + 10
+				if fvalue>100
+					fvalue = 100
+				endif
+				Aroused.SetActorExposure(npc_ref[Slot], fvalue as Int)
+			endif
 			DButtConfig.ScanerModificator = 0.5
 			DButtMaintenance.log("Med")
 			npc_stored[Slot] =  Utility.RandomInt((0.2 * DButtConfig.gasSafeLevel) as Int,(0.8 * DButtConfig.gasSafeLevel) as Int)
@@ -433,6 +496,14 @@ bool function tryToFart(int Slot,float extraProb = 0.0)
 	
 		if rebased >=part * 2 && rebased < part * 3
 			DButtPlayer.playBig(Slot)
+			if DButtConfig.effectOnArousal == true
+				float fvalue =  Aroused.GetActorExposure(npc_ref[Slot]) as float
+				fvalue = fvalue + 20
+				if fvalue>100
+					fvalue = 100
+				endif
+				Aroused.SetActorExposure(npc_ref[Slot], fvalue as Int)
+			endif
 			DButtConfig.ScanerModificator = 0.8
 			DButtMaintenance.log("Big")
 			npc_stored[Slot] =  Utility.RandomInt((DButtConfig.gasSafeLevel) as Int,(1.5 * DButtConfig.gasSafeLevel) as Int)

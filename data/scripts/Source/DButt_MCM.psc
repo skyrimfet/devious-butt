@@ -113,6 +113,10 @@ Event OnPageReset(string page)
 			strengthPotion =  AddMenuOption("Potion power effect", levelString[DButtConfig.vendorBoostPotion as int])
 		endif
 		
+		dependOnWeight = AddToggleOption("Depend fart on weight", DButtConfig.dependOnWeight)
+		dependOnArousal = AddToggleOption("Depend fart on arousal", DButtConfig.dependOnArousal)
+		effectOnArousal = AddToggleOption("Fart fetish", DButtConfig.effectOnArousal)
+		
 		AddEmptyOption()
 		
 		enableFood = AddToggleOption("Food causes farts", DButtConfig.enableFood)
@@ -339,6 +343,35 @@ Event OnOptionSelect(Int Menu)
 			 DButtConfig.enablePotion = true
 		endIf
 		SetToggleOptionValue(Menu,  DButtConfig.enablePotion)
+	endIf	
+	if Menu == dependOnWeight
+		if  DButtConfig.dependOnWeight == true
+			 DButtConfig.dependOnWeight = false			
+		else
+			 DButtConfig.dependOnWeight = true
+		endIf
+		SetToggleOptionValue(Menu,  DButtConfig.dependOnWeight)
+	endIf
+	if Menu == dependOnArousal
+		if  DButtConfig.dependOnArousal == true
+			 DButtConfig.dependOnArousal = false			
+		else
+			 DButtConfig.dependOnArousal = true
+			 DButtConfig.effectOnArousal = false
+			 ForcePageReset()
+		endIf
+		SetToggleOptionValue(Menu,  DButtConfig.dependOnArousal)
+	endIf
+	if Menu == effectOnArousal
+		if  DButtConfig.effectOnArousal == true
+			 DButtConfig.effectOnArousal = false			
+		else
+			 DButtConfig.effectOnArousal = true
+			 DButtConfig.dependOnArousal = false
+			 ForcePageReset()
+			 
+		endIf
+		SetToggleOptionValue(Menu,  DButtConfig.effectOnArousal)
 	endIf
 	if Menu == enableFood
 		if  DButtConfig.enableFood == true
@@ -635,6 +668,9 @@ int slutViaPlug
 int slutViaInstant
 
 int bodyScale
+int dependOnWeight
+int dependOnArousal
+int effectOnArousal
 int bodyScaleSmooth
 int bellyScale
 int buttScale

@@ -8,6 +8,9 @@ Float Property lastKnownGameVersion Auto
 Bool Property logToFile Auto
 Bool Property logToConsole Auto
 Bool Property modEnabled Auto
+Bool Property dependOnWeight Auto
+Bool Property dependOnArousal Auto
+Bool Property effectOnArousal Auto
 
 Actor Property playerRef Auto
 

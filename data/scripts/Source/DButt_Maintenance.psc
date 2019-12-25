@@ -50,6 +50,10 @@ function update()
 	
 	if lastVersion < 2.5
 		update25()	
+	endIf	
+	
+	if lastVersion < 2.6
+		update26()	
 	endIf
 	
 	DButtConfig.lastKnownGameVersion = currentVersion
@@ -58,6 +62,11 @@ function update()
 endFunction
 
 
+function update26()
+	DButtConfig.dependOnWeight = false
+	DButtConfig.dependOnArousal = false
+	DButtConfig.effectOnArousal = false
+endFunction
 function update25()
 	
 	
