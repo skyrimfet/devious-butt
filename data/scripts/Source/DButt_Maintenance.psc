@@ -66,8 +66,8 @@ endFunction
 
 function update27()
 	DButtConfig.scanerRange = 5000
-	DButtConfig.npcReact = true
-	DButtConfig.playerBreak = true
+	DButtConfig.npcReact = false
+	DButtConfig.playerBreak = false
 	DButtConfig.oralSoundSupport = true
 endFunction
 

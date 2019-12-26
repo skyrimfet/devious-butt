@@ -179,6 +179,13 @@ Event OnPageReset(string page)
 		if DButtConfig.enableBadluck==true
 			enableBadluckCalmDown = AddSliderOption("Event calm down [s.]",DButtConfig.enableBadluckCalmDown,"{0}")
 		endIf
+		AddEmptyOption()
+		AddHeaderOption("World")
+		npcReact = AddToggleOption("NPCs reactions",DButtConfig.npcReact)
+		AddEmptyOption()
+		AddHeaderOption("Sex")
+		oralSoundSupport = AddToggleOption("Oral burps",DButtConfig.oralSoundSupport)
+		
 	endif
 	
 	if (page == "Slut list")
@@ -334,6 +341,22 @@ Event OnOptionSelect(Int Menu)
 			 DButtConfig.slutViaPlug = true
 		endIf
 		SetToggleOptionValue(Menu,  DButtConfig.slutViaPlug)
+	endIf	
+	if Menu == npcReact
+		if  DButtConfig.npcReact == true
+			 DButtConfig.npcReact = false			
+		else
+			 DButtConfig.npcReact = true
+		endIf
+		SetToggleOptionValue(Menu,  DButtConfig.npcReact)
+	endIf
+	if Menu == oralSoundSupport
+		if  DButtConfig.oralSoundSupport == true
+			 DButtConfig.oralSoundSupport = false			
+		else
+			 DButtConfig.oralSoundSupport = true
+		endIf
+		SetToggleOptionValue(Menu,  DButtConfig.oralSoundSupport)
 	endIf	
 
 	if Menu == enablePotion
@@ -683,6 +706,9 @@ int urineProduction
 int soundFartVolume
 int soundGurgleVolume
 int soundBadLuckShitVolume
+
+int oralSoundSupport
+int npcReact
 
 int logToFile
 int logToConsole
