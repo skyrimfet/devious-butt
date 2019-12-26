@@ -31,4 +31,9 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 			endIf
 		endif
 	endWhile
+	
+	if putMsg == true
+		debug.notification("Damn, someone could hear that!")
+	endif
+	
 endEvent

@@ -55,12 +55,21 @@ function update()
 	if lastVersion < 2.6
 		update26()	
 	endIf
-	
+	if lastVersion < 2.7
+		update27()	
+	endIf
 	DButtConfig.lastKnownGameVersion = currentVersion
 
 	DButtModCore.resetAllWhatImportant()
 endFunction
 
+
+function update27()
+	DButtConfig.scanerRange = 5000
+	DButtConfig.npcReact = true
+	DButtConfig.playerBreak = true
+	DButtConfig.oralSoundSupport = true
+endFunction
 
 function update26()
 	DButtConfig.dependOnWeight = false

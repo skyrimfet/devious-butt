@@ -2,12 +2,13 @@ Scriptname DButt_ModCore extends Quest
 
 DButt_Scaner 	  Property DButtScaner Auto
 DButt_Maintenance Property DButtMaintenance Auto
-DButt_Config      Property DButtConfig      Auto
-DButt_Actor       Property DButtActor      Auto
-DButt_Player Property DButtPlayer Auto
+DButt_Config      Property DButtConfig Auto
+DButt_Actor       Property DButtActor Auto
+DButt_Player 	  Property DButtPlayer Auto
+DButt_Main 		  Property DButtMain Auto
 
 SexLabFramework Property sexlab auto
-
+Import JsonUtil
 function play()
 	DButtMaintenance.log("Play()")
 	
@@ -101,8 +102,9 @@ function processEnemies()
 	
 	
 	bool somethingToDo = false
-	
+	int enemiesCount = 0
 	int i = actors.length
+	int minDistance = DButtConfig.scanerRange 
 	while i > 0
 		i -= 1
 	
@@ -111,6 +113,10 @@ function processEnemies()
 			;if actors[i].IsHostileToActor(DButtConfig.playerRef)==false
 				somethingToDo=true
 				DButtMaintenance.log("processEnemies() Enemies are in near!")
+				enemiesCount = enemiesCount + 1
+				if DButtConfig.playerRef.GetDistance(actors[i]) < minDistance
+					minDistance = DButtConfig.playerRef.GetDistance(actors[i]) as int
+				endIf
 			endIf
 		endif
 	endWhile
@@ -156,6 +162,32 @@ function processEnemies()
 				else
 					DButtActor.addAdditional(DButtConfig.playerSlot,(DButtConfig.gasSafeLevel / 2))	
 				endIf
+				
+				DButtMaintenance.log("processEnemies() + min dist " +minDistance )
+				int sneakBonus=0
+				if DButtActor.npc_ref[DButtConfig.playerSlot].IsSneaking()
+					sneakBonus = 2
+					if minDistance < 1500
+						enemiesCount = enemiesCount + 3
+					endIf
+				endIf
+				
+				while enemiesCount > 0
+					enemiesCount -= 1
+					DButtMaintenance.log("processEnemies() + try to add extra")
+					if Utility.RandomInt(0, enemiesCount+2-sneakBonus)==0
+						DButtMaintenance.log("processEnemies() + extra ADDED")
+						if DButtActor.npc_stored[DButtConfig.playerSlot] < DButtConfig.gasSafeLevel
+							DButtActor.npc_stored[DButtConfig.playerSlot] = DButtActor.npc_stored[DButtConfig.playerSlot] + DButtConfig.gasSafeLevel
+						else
+							DButtActor.addAdditional(DButtConfig.playerSlot,(DButtConfig.gasSafeLevel / 2))	
+						endIf
+					endif
+						
+				endWhile
+				
+				
+				
 				
 				DButtMaintenance.log("processEnemies() npc_stored: "+DButtActor.npc_stored[DButtConfig.playerSlot])		
 				
@@ -234,17 +266,86 @@ endFunction
 function unregisterEvents()
 	UnregisterForModEvent("HookOrgasmEnd")
 	UnregisterForModEvent("DTOrgasmS")
+	UnregisterForModEvent("HookStageStart")
+	UnregisterForModEvent("HookAnimationEnd")
 endFunction
 
 function registerEvents()
+	RegisterForModEvent("HookAnimationEnd", "AnimationEnd")
+	RegisterForModEvent("HookStageStart", "StageStart")
 	if DButtConfig.separateOrgasmPack == false
-		RegisterForModEvent("HookOrgasmEnd", "DBHookOrgasmEnd")	
+		RegisterForModEvent("HookOrgasmEnd", "DBHookOrgasmEnd")
 	else
 		RegisterForModEvent("SexLabOrgasmSeparate","DTOrgasmS")
 	endIf
 endFunction
 
-;Event DTStageStart
+Event AnimationEnd(int threadID, bool HasPlayer)
+
+debug.notification("end event")
+	SslThreadController thread = SexLab.GetController(threadID)
+	Actor[] actorList = thread.Positions
+	actorList[0].removeSpell(DButtConfig.DButt_OralSound)
+	
+endEvent
+
+Event StageStart(int threadID, bool HasPlayer)
+	if DButtConfig.oralSoundSupport==false
+		return
+	endif
+	
+	DButtMaintenance.log("STAGE")
+	DButtMaintenance.log("STAGE ----- STAGE")
+	DButtMaintenance.log("STAGE")
+	SslThreadController thread = SexLab.GetController(threadID)
+	Int currentStage =  thread.Stage
+	DButtMaintenance.log("current stage "+currentStage)
+	if currentStage >= 0
+	
+		SslBaseAnimation animation = thread.Animation
+		
+		String AnimName = "BlowJob"
+		String path = "DeviousButt/blowjobAnimsDB_"+DButtMain.getJsonVersion()+".json";
+		
+		JsonUtil.Load(path)
+		
+		DButtMaintenance.log("IS VALID: "+JsonUtil.IsGood(path))
+		DButtMaintenance.log("GET ERR: "+JsonUtil.GetErrors(path))
+		DButtMaintenance.log("GET Cont: "+JsonUtil.JsonInFolder(path))
+		int[] list = JsonUtil.IntListToArray(path, animation.Name);
+		DButtMaintenance.log("LIST:"+list)
+		
+		;debug tool
+		if list.length==0 || 1==2
+			if animation.HasTag("Blowjob") || animation.HasTag("Oral")
+				JsonUtil.IntListAdd(path, animation.Name, 0, false)
+				JsonUtil.Save(path)
+				debug.messagebox(animation.Name +" "+currentStage)
+			endIf
+		endif
+		
+		Actor[] actorList = thread.Positions
+			Actor primaryActor
+			primaryActor = actorList[0]
+			primaryActor.removeSpell(DButtConfig.DButt_OralSound)
+			
+		if  list[(currentStage - 1)] == 1;animation.HasTag("Blowjob") || animation.HasTag("Oral")
+			DButtMaintenance.log("its correct tag ")
+			
+			DButtMaintenance.log("primary actor "+primaryActor)
+			Bool isPrimaryFemale = SexLab.GetGender(primaryActor) == 1
+			if isPrimaryFemale
+				primaryActor.addSpell(DButtConfig.DButt_OralSound,false)
+			endif
+		
+		endif
+		
+	endif
+	
+EndEvent
+
+
+
 
 Event DTOrgasmS(Form ActorRef, Int Thread)
 	actor akActor = ActorRef as actor

@@ -44,6 +44,11 @@ bool Property slutViaAnalSex Auto
 bool Property slutViaPlug Auto
 bool Property enablePotion Auto
 bool Property enableFood Auto
+
+bool Property npcReact Auto
+bool Property playerBreak Auto
+bool Property oralSoundSupport Auto
+
 Int Property scanerRange Auto
 bool Property enableBadluck Auto
 int Property enableBadluckCalmDown Auto
@@ -64,8 +69,11 @@ Int Property painVolume Auto
 	
 Spell Property DButt_WatchDog Auto
 Spell Property DButt_AlertEnemies Auto
+Spell Property DButt_NpcReact Auto
 Spell Property DButt_PeeEffect Auto 
 Spell Property DButt_PainEffect Auto 
+Spell Property DButt_OralSound Auto 
+
 
 
 Race[] Property allowedRaces Auto
@@ -110,6 +118,16 @@ Sound Property skyrimFetPumppainmed auto
 Sound Property skyrimFetPumppainlow auto 
 Sound Property skyrimFetPumpFartButtplug auto
 Sound Property skyrimFetPumpFartButtplugFinal auto
+
+Sound Property skyrimFetPumpcrowdeventshame_female auto
+Sound Property skyrimFetPumpcrowdeventshame_male auto
+
+
+Sound Property skyrimFetPumpOralDeep auto
+
+
+
+
 
 Armor Property DButtPeeI Auto
 Armor Property DButtPeeII Auto

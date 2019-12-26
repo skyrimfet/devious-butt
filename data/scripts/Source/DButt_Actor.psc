@@ -533,11 +533,19 @@ bool function tryToFart(int Slot,float extraProb = 0.0)
 		;npc_badluck_calmdown[slot] = -1
 		DButtConfig.DButt_AlertEnemies.cast(npc_ref[slot], npc_ref[slot])
 	endIf
+	if DButtConfig.npcReact == true
+		npc_ref[slot].addSpell(DButtConfig.DButt_NpcReact,false)
+		DButtConfig.DButt_NpcReact.cast(npc_ref[slot], npc_ref[slot])
+	endif
+	
 	DButtInflation.process(Slot)
 	
 	if DButtConfig.enableBadluck == true	
 		npc_ref[slot].removeSpell(DButtConfig.DButt_AlertEnemies)
 	endIf
+	if DButtConfig.npcReact == true
+		npc_ref[slot].removeSpell(DButtConfig.DButt_NpcReact)
+	endif
 	
 	npc_badluck_calmdown[slot] = (DButtConfig.enableBadluckCalmDown / DButtConfig.checkInterval as Int) as int 
 	return true
