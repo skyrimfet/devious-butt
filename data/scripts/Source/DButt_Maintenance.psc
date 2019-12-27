@@ -69,6 +69,7 @@ function update27()
 	DButtConfig.npcReact = false
 	DButtConfig.playerBreak = false
 	DButtConfig.oralSoundSupport = true
+	DButtConfig.debugAnimations = true
 endFunction
 
 function update26()

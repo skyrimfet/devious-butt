@@ -12,6 +12,8 @@ Bool Property dependOnWeight Auto
 Bool Property dependOnArousal Auto
 Bool Property effectOnArousal Auto
 
+Bool Property debugAnimations Auto
+
 Actor Property playerRef Auto
 
 Int Property playerSlot Auto

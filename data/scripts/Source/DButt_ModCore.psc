@@ -316,11 +316,11 @@ Event StageStart(int threadID, bool HasPlayer)
 		DButtMaintenance.log("LIST:"+list)
 		
 		;debug tool
-		if list.length==0 || 1==2
-			if animation.HasTag("Blowjob") || animation.HasTag("Oral")
+		if DButtConfig.debugAnimations == true
+			if animation.HasTag("Blowjob") || animation.HasTag("Oral") || animation.HasTag("69")
 				JsonUtil.IntListAdd(path, animation.Name, 0, false)
 				JsonUtil.Save(path)
-				debug.messagebox(animation.Name +" "+currentStage)
+				debug.messagebox("DEVIOUS BUTT DEBUG, ANIM:"+animation.Name+" ["+currentStage+"]")
 			endIf
 		endif
 		

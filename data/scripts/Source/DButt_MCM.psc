@@ -88,6 +88,8 @@ Event OnPageReset(string page)
 		AddEmptyOption()
 		logToFile = AddToggleOption("Log to file",DButtConfig.logToFile)
 		logToConsole = AddToggleOption("Console log",DButtConfig.logToConsole)
+		debugAnimations = AddToggleOption("Debug animations",DButtConfig.debugAnimations)
+		
 		AddEmptyOption()
 		
 		
@@ -242,6 +244,14 @@ Event OnOptionSelect(Int Menu)
 			 DButtConfig.logToConsole = true
 		endIf
 		SetToggleOptionValue(Menu,  DButtConfig.logToConsole)
+	endIf	
+	if Menu == debugAnimations
+		if  DButtConfig.debugAnimations == true
+			 DButtConfig.debugAnimations = false			
+		else
+			 DButtConfig.debugAnimations = true
+		endIf
+		SetToggleOptionValue(Menu,  DButtConfig.debugAnimations)
 	endIf
 	
 	if Menu == modEnabled
@@ -713,6 +723,7 @@ int npcReact
 int logToFile
 int logToConsole
 
+int debugAnimations
 
 int enableUrine
 
