@@ -6,7 +6,7 @@ DButt_Player Property DButtPlayer Auto
 DButt_ModCore	Property DButtModCore Auto
 SexLabFramework Property SexLab Auto
 Actor akActor
-
+slaUtilScr Property Aroused Auto
 bool isWorking
 Int fartSlut
 
@@ -33,10 +33,22 @@ Event OnUpdate()
 			Actor[] actorList = thread.Positions
 			int rank =  DButtModCore.getFartFanFaction(actorList[1],Utility.randomInt(2,10))
 			
-			actorAlias[1].BonusEnjoyment(actorList[1] , (-50 + (10 * rank ) ) * 4  )
-			actorAlias[0].BonusEnjoyment(actorList[0] ,-200)
+			SexLab.GetController(DButtConfig.usingSexlabThread).ActorAlias(actorList[1]).BonusEnjoyment(actorList[1],(-50 + (10 * rank ) ) * 4)
+			SexLab.GetController(DButtConfig.usingSexlabThread).ActorAlias(actorList[0]).BonusEnjoyment(actorList[0],-500)
+			
+			;actorAlias[1].BonusEnjoyment(actorList[1] , (-50 + (10 * rank ) ) * 4  )
+			;actorAlias[0].BonusEnjoyment(actorList[0] ,-200)
 			
 			;sslActorAlias actorAlias
+		endif
+		Actor[] actorList = SexLab.GetController(DButtConfig.usingSexlabThread).Positions
+		if DButtConfig.usingSexlabThread >=0
+			float arousalWeight =  Aroused.GetActorExposure(actorList[1]) as float
+			arousalWeight = arousalWeight - (10 * (10 - DButtModCore.getFartFanFaction(actorList[1])))
+			Aroused.SetActorExposure(actorList[1], arousalWeight as Int)
+			arousalWeight =  Aroused.GetActorExposure(actorList[0]) as float
+			arousalWeight = arousalWeight - 33
+			Aroused.SetActorExposure(actorList[0], arousalWeight as Int)
 		endif
 		self.dispel()
 	endif

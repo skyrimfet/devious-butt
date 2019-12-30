@@ -290,6 +290,11 @@ Event AnimationEnd(int threadID, bool HasPlayer)
 	actorList[0].removeSpell(DButtConfig.DButt_OralSound)
 	actorList[0].removeSpell(DButtConfig.DButt_AnalSound)
 	
+	int i = actorList.length
+	while i > 0	
+		i -= 1
+		actorList[i].removeFromFaction(DButtConfig.dbuttsexlabanimationFaction)
+	endwhile
 endEvent
 
 Event StageStart(int threadID, bool HasPlayer)
@@ -313,6 +318,11 @@ Event StageStart(int threadID, bool HasPlayer)
 		SslBaseAnimation animation = thread.Animation
 		Actor[] actorList = thread.Positions
 		Actor primaryActor
+			int i = actorList.length
+			while i > 0	
+				i -= 1
+				actorList[i].setFactionRank(DButtConfig.dbuttsexlabanimationFaction,1)
+			endwhile
 		primaryActor = actorList[0]
 		primaryActor.removeSpell(DButtConfig.DButt_OralSound)
 		primaryActor.removeSpell(DButtConfig.DButt_AnalSound)
@@ -427,6 +437,7 @@ endEvent
 function modFartFanFaction(Actor acActor,int mod = 0,int addIfnotIn = -1)
 	int current = getFartFanFaction(acActor,addIfnotIn)
 	if current == -1 
+	
 		return
 	endif
 	setFartFanFaction(acActor,current+mod)

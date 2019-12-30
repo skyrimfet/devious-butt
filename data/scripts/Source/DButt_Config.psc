@@ -154,3 +154,4 @@ bool Property dldiaper auto
 float Property ScanerModificator Auto
 
 Faction Property dbuttfartfanFaction Auto
+Faction Property dbuttsexlabanimationFaction Auto

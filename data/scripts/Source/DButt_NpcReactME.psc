@@ -8,8 +8,6 @@ DButt_ModCore	Property DButtModCore Auto
 Actor[] actors
 slaUtilScr Property Aroused Auto
 
-Faction Property SexLabAnimatingFaction Auto
-
 Event OnEffectStart(Actor akTarget, Actor akCaster)
 	DButtMaintenance.log("ACTOR REACT")
 	
@@ -25,14 +23,14 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 
 			if actors[i].IsHostileToActor(DButtConfig.playerRef)==false &&  actors[i].IsInCombat() == false
 				if DButtConfig.allowedRaces.find(actors[i].getRace()) > -1 && akTarget.HasLOS(actors[i])
-					if DButtModCore.getFartFanFaction(actors[i],Utility.randomInt(0,8))<5
+					if DButtModCore.getFartFanFaction(actors[i],Utility.randomInt(0,10))<=5
 						if actors[i].GetActorBase().GetSex() == 0
 							int s = DButtConfig.skyrimFetPumpcrowdeventshame_male.play(actors[i])
 						else
 							int s = DButtConfig.skyrimFetPumpcrowdeventshame_female.play(actors[i])
 						endif
 						actors[i].SetLookAt(akTarget)
-						if (actors[i].GetSitState() == 0 && actors[i].IsInFaction(SexLabAnimatingFaction)==false && actors[i].IsOnMount()==false)
+						if (actors[i].GetSitState() == 0 && actors[i].IsInFaction(DButtConfig.dbuttsexlabanimationFaction)==false && actors[i].IsOnMount()==false)
 							int randAnim = Utility.randomInt(0,4)
 							if randAnim<=2
 								debug.SendAnimationEvent(actors[i],"IdleLaugh")
@@ -61,7 +59,7 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 	i = actors.length
 	while i > 0
 		i -= 1
-		if (actors[i].GetSitState() == 0 && actors[i].IsInFaction(SexLabAnimatingFaction)==false)
+		if (actors[i].GetSitState() == 0 && actors[i].IsInFaction(DButtConfig.dbuttsexlabanimationFaction)==false)
 			debug.SendAnimationEvent(actors[i],"IdleForceDefaultState")
 		endif
 	endWhile
