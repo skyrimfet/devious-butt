@@ -89,6 +89,10 @@ Event OnPageReset(string page)
 		logToFile = AddToggleOption("Log to file",DButtConfig.logToFile)
 		logToConsole = AddToggleOption("Console log",DButtConfig.logToConsole)
 		debugAnimations = AddToggleOption("Debug animations",DButtConfig.debugAnimations)
+		if DButtConfig.debugAnimations==true
+			_keymapOID_K1 = AddKeyMapOption("Capture Anim/Stg oral", DButtConfig.keyCaptureBlowJobAnimStage)
+			_keymapOID_K2 = AddKeyMapOption("Capture Anim/Stg faces.", DButtConfig.keyCaptureFaceSitAnimStage)
+		endif
 		
 		AddEmptyOption()
 		
@@ -211,18 +215,24 @@ event OnOptionKeyMapChange(int a_option, int a_keyCode, string a_conflictControl
 	{Called when a key has been remapped}
 
 	if (a_option == _keymapOID_K)
-
-	
-
-		
 			DButtConfig.keyReliefUrine = a_keyCode
 			SetKeymapOptionValue(a_option, a_keyCode)
-	
+	endIf
+	if (a_option == _keymapOID_K1)
+		DButtConfig.keyCaptureBlowJobAnimStage = a_keyCode
+		SetKeymapOptionValue(a_option, a_keyCode)
+	endIf
+	if (a_option == _keymapOID_K2)
+		DButtConfig.keyCaptureFaceSitAnimStage = a_keyCode
+		SetKeymapOptionValue(a_option, a_keyCode)
 	endIf
 endEvent
 
 
 int _keymapOID_K
+int _keymapOID_K1
+int _keymapOID_K2
+
 
 Event OnOptionSelect(Int Menu)
 
@@ -250,6 +260,7 @@ Event OnOptionSelect(Int Menu)
 			 DButtConfig.debugAnimations = false			
 		else
 			 DButtConfig.debugAnimations = true
+			 ForcePageReset()
 		endIf
 		SetToggleOptionValue(Menu,  DButtConfig.debugAnimations)
 	endIf

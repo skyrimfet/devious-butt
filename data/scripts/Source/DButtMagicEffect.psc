@@ -7,6 +7,7 @@ Keyword property VendorItemPotion auto
 
 Actor Property acActor Auto
 
+Import JsonUtil
 
 Bool Property enabled Auto
 Bool Property wait Auto
@@ -48,6 +49,8 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
     
 	RegisterForAnimationEvent(acActor, "tailSneakLocomotion")
 	RegisterForKey(DButtConfig.keyReliefUrine)
+	RegisterForKey(DButtConfig.keyCaptureBlowJobAnimStage)
+	RegisterForKey(DButtConfig.keyCaptureFaceSitAnimStage)
 EndEvent
 
 Event OnEffectFinish(Actor acActor, Actor akCaster)
@@ -56,31 +59,54 @@ Event OnEffectFinish(Actor acActor, Actor akCaster)
 endEvent
 
 
+function storeAnimDebug(String type, String name, String stage)
+
+	if DButtConfig.debugAnimations == false || DButtConfig.debugAnimCurrentAnim==""
+		return
+	endif
+	
+	String path = "DeviousButt/"+type+"_debug_capture_DB_.json";
+	JsonUtil.Load(path)
+	
+	JsonUtil.IntListAdd(path, name+"["+stage+"]", 1, false)
+	JsonUtil.Save(path)
+	debug.messagebox("DButt DEBUG: STORED!")
+endfunction
+
 Event OnKeyDown(Int KeyCode)
 		DButtMaintenance.log("Key"+KeyCode)
-		if DButtActor.npc_ref[Slot].WornHasKeyword(DButtConfig.dbutt_catheter)==false
-			return
+		
+		if KeyCode == DButtConfig.keyCaptureBlowJobAnimStage
+			storeAnimDebug("blow",DButtConfig.debugAnimCurrentAnim,DButtConfig.debugAnimCurrentStage)
+		endif
+		if KeyCode ==  DButtConfig.keyCaptureFaceSitAnimStage
+			storeAnimDebug("face",DButtConfig.debugAnimCurrentAnim,DButtConfig.debugAnimCurrentStage)
 		endif
 		
-		
-		if wait == true
-			Debug.notification("You have to wait a moment...")
-			 DButtPlayer.playPainLow(Slot)
-			return
-		endIf
+		if KeyCode == DButtConfig.keyReliefUrine
+			if DButtActor.npc_ref[Slot].WornHasKeyword(DButtConfig.dbutt_catheter)==false
+				return
+			endif
 		
 		
+			if wait == true
+				Debug.notification("You have to wait a moment...")
+				DButtPlayer.playPainLow(Slot)
+				return
+			endIf
 		
-		if (DButtActor.tryToUrinate(Slot,0.5, true) == true)
-		else
-			Debug.notification("Nothing happens...")
-			DButtPlayer.playPainMed(Slot)			
+		
+		
+			if (DButtActor.tryToUrinate(Slot,0.5, true) == true)
+			else
+				Debug.notification("Nothing happens...")
+				DButtPlayer.playPainMed(Slot)			
+			endif
+		
+			wait = true
+			UnregisterForUpdate()
+			RegisterForSingleUpdate(DButtConfig.checkInterval)	
 		endif
-		
-		wait = true
-		UnregisterForUpdate()
-		RegisterForSingleUpdate(DButtConfig.checkInterval)	
-		
 EndEvent
 
 Event OnUpdate()

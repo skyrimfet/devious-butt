@@ -8,7 +8,7 @@ DButt_Actor     Property DButtActor Auto
 
 
 float function getVersion()
-	return 2.7
+	return 2.8
 endfunction
 
 string function getJsonVersion()

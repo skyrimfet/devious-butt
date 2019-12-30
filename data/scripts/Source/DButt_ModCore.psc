@@ -281,15 +281,23 @@ function registerEvents()
 endFunction
 
 Event AnimationEnd(int threadID, bool HasPlayer)
-
-debug.notification("end event")
+	DButtConfig.debugAnimCurrentAnim = ""
+	if HasPlayer
+		DButtConfig.DButtConfig.usingSexlabThread = -1
+	endif
 	SslThreadController thread = SexLab.GetController(threadID)
 	Actor[] actorList = thread.Positions
 	actorList[0].removeSpell(DButtConfig.DButt_OralSound)
+	actorList[0].removeSpell(DButtConfig.DButt_AnalSound)
 	
 endEvent
 
 Event StageStart(int threadID, bool HasPlayer)
+
+	if HasPlayer
+		DButtConfig.usingSexlabThread = threadID
+	endif
+	
 	if DButtConfig.oralSoundSupport==false
 		return
 	endif
@@ -301,45 +309,46 @@ Event StageStart(int threadID, bool HasPlayer)
 	Int currentStage =  thread.Stage
 	DButtMaintenance.log("current stage "+currentStage)
 	if currentStage >= 0
-	
+		
 		SslBaseAnimation animation = thread.Animation
-		
-		String AnimName = "BlowJob"
-		String path = "DeviousButt/blowjobAnimsDB_"+DButtMain.getJsonVersion()+".json";
-		
-		JsonUtil.Load(path)
-		
-		DButtMaintenance.log("IS VALID: "+JsonUtil.IsGood(path))
-		DButtMaintenance.log("GET ERR: "+JsonUtil.GetErrors(path))
-		DButtMaintenance.log("GET Cont: "+JsonUtil.JsonInFolder(path))
-		int[] list = JsonUtil.IntListToArray(path, animation.Name);
-		DButtMaintenance.log("LIST:"+list)
-		
-		;debug tool
-		if DButtConfig.debugAnimations == true
-			if animation.HasTag("Blowjob") || animation.HasTag("Oral") || animation.HasTag("69")
-				JsonUtil.IntListAdd(path, animation.Name, 0, false)
-				JsonUtil.Save(path)
-				debug.messagebox("DEVIOUS BUTT DEBUG, ANIM:"+animation.Name+" ["+currentStage+"]")
-			endIf
-		endif
-		
 		Actor[] actorList = thread.Positions
-			Actor primaryActor
-			primaryActor = actorList[0]
-			primaryActor.removeSpell(DButtConfig.DButt_OralSound)
-			
-		if  list[(currentStage - 1)] == 1;animation.HasTag("Blowjob") || animation.HasTag("Oral")
-			DButtMaintenance.log("its correct tag ")
-			
-			DButtMaintenance.log("primary actor "+primaryActor)
-			Bool isPrimaryFemale = SexLab.GetGender(primaryActor) == 1
-			if isPrimaryFemale
-				primaryActor.addSpell(DButtConfig.DButt_OralSound,false)
+		Actor primaryActor
+		primaryActor = actorList[0]
+		primaryActor.removeSpell(DButtConfig.DButt_OralSound)
+		primaryActor.removeSpell(DButtConfig.DButt_AnalSound)
+
+		DButtConfig.debugAnimCurrentAnim = animation.Name
+		DButtConfig.debugAnimCurrentStage = currentStage	
+
+		;ORAL SOUNDS
+		if actorList.length>1
+			if SexLab.GetGender(actorList[1]) == 0 || actorList[1].IsEquipped(DButtConfig.SexLabCalypsStrapon)
+				String path = "DeviousButt/blowjobAnimsDB_"+DButtMain.getJsonVersion()+".json";		
+				JsonUtil.Load(path)		
+				int[] list = JsonUtil.IntListToArray(path, animation.Name)		
+
+				if list.length>0 && list[(currentStage - 1)] == 1;animation.HasTag("Blowjob") || animation.HasTag("Oral")
+					Bool isPrimaryFemale = SexLab.GetGender(primaryActor) == 1
+					if isPrimaryFemale
+						primaryActor.addSpell(DButtConfig.DButt_OralSound,false)
+					endif
+				endif
 			endif
-		
 		endif
 		
+		;FART AND PISS
+		if actorList.length>1
+			int fartSlutSlot = DButtActor.isRegistered(primaryActor)
+			if fartSlutSlot >= 0
+				String path = "DeviousButt/facedomAnimsDB_"+DButtMain.getJsonVersion()+".json";		
+				JsonUtil.Load(path)
+				int[] list = JsonUtil.IntListToArray(path, animation.Name)
+				if list.length>0 && list[(currentStage - 1)] == 1
+					Debug.notification("Oh, no i feel preasure!")
+					primaryActor.addSpell(DButtConfig.DButt_AnalSound,false)
+				endif
+			endif
+		endif
 	endif
 	
 EndEvent

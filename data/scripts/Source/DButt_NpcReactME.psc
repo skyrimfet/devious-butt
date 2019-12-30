@@ -28,7 +28,7 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 						int s = DButtConfig.skyrimFetPumpcrowdeventshame_female.play(actors[i])
 					endif
 					actors[i].SetLookAt(akTarget)
-					if (actors[i].GetSitState() == 0 && actors[i].IsInFaction(SexLabAnimatingFaction)==false)
+					if (actors[i].GetSitState() == 0 && actors[i].IsInFaction(SexLabAnimatingFaction)==false && actors[i].IsOnMount()==false)
 						int randAnim = Utility.randomInt(0,4)
 						if randAnim<=2
 							debug.SendAnimationEvent(actors[i],"IdleLaugh")

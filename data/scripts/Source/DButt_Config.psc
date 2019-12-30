@@ -1,6 +1,14 @@
 Scriptname DButt_Config extends Quest  
 
 Int Property keyReliefUrine Auto
+Int Property keyCaptureBlowJobAnimStage Auto
+Int Property keyCaptureFaceSitAnimStage Auto
+Int Property usingSexlabThread Auto
+
+String Property debugAnimCurrentAnim Auto
+String Property debugAnimCurrentStage Auto
+
+Armor Property SexLabCalypsStrapon Auto
 
 Float Property checkInterval Auto
 Float Property lastKnownGameVersion Auto
@@ -28,7 +36,7 @@ Float Property urineProductionSpeed Auto
 Float Property urineSafeLevel Auto
 Int Property urineProbLevel Auto
 
-
+Bool Property SLSOusing Auto
 Bool Property bodyScale Auto
 Bool Property bodyScaleSmooth Auto
 Float Property buttScale Auto
@@ -75,6 +83,7 @@ Spell Property DButt_NpcReact Auto
 Spell Property DButt_PeeEffect Auto 
 Spell Property DButt_PainEffect Auto 
 Spell Property DButt_OralSound Auto 
+Spell Property DButt_AnalSound Auto 
 
 
 

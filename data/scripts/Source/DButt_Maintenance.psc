@@ -32,6 +32,7 @@ function update()
 
 	if lastVersion==currentVersion
 		log("No update requied")
+		always()
 		return 
 	endIf
 	
@@ -57,12 +58,19 @@ function update()
 	endIf
 	if lastVersion < 2.7
 		update27()	
+	endIf	
+	if lastVersion < 2.8
+		update28()	
 	endIf
 	DButtConfig.lastKnownGameVersion = currentVersion
-
+	always()
 	DButtModCore.resetAllWhatImportant()
 endFunction
 
+
+function update28()
+	DButtConfig.SLSOusing = false
+endFunction
 
 function update27()
 	DButtConfig.scanerRange = 5000
@@ -226,6 +234,12 @@ function update20()
 	log("Updated...")	
 endFunction
 
+function always()
+	DButtConfig.SLSOusing = false
+	if (Game.GetModbyName("SLSO.esp") != 255)
+		DButtConfig.SLSOusing = true
+	endif
+endFunction
 
 function log(String msg)
 	if DButtConfig.logToFile == true
