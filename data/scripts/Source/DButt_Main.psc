@@ -12,7 +12,7 @@ float function getVersion()
 endfunction
 
 string function getJsonVersion()
-	return "10"
+	return "11"
 endfunction
 
 Event OnInit()

@@ -191,6 +191,7 @@ Event OnPageReset(string page)
 		AddEmptyOption()
 		AddHeaderOption("Sex")
 		oralSoundSupport = AddToggleOption("Oral burps",DButtConfig.oralSoundSupport)
+		facefartSoundSupport = AddToggleOption("Facefarts",DButtConfig.facefartSoundSupport)
 		
 	endif
 	
@@ -378,6 +379,14 @@ Event OnOptionSelect(Int Menu)
 			 DButtConfig.oralSoundSupport = true
 		endIf
 		SetToggleOptionValue(Menu,  DButtConfig.oralSoundSupport)
+	endIf		
+	if Menu == facefartSoundSupport
+		if  DButtConfig.facefartSoundSupport == true
+			 DButtConfig.facefartSoundSupport = false			
+		else
+			 DButtConfig.facefartSoundSupport = true
+		endIf
+		SetToggleOptionValue(Menu,  DButtConfig.facefartSoundSupport)
 	endIf	
 
 	if Menu == enablePotion
@@ -729,6 +738,7 @@ int soundGurgleVolume
 int soundBadLuckShitVolume
 
 int oralSoundSupport
+int facefartSoundSupport
 int npcReact
 
 int logToFile

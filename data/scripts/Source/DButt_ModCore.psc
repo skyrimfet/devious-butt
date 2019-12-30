@@ -303,9 +303,8 @@ Event StageStart(int threadID, bool HasPlayer)
 		DButtConfig.usingSexlabThread = threadID
 	endif
 	
-	if DButtConfig.oralSoundSupport==false
-		return
-	endif
+	
+
 	
 	DButtMaintenance.log("STAGE")
 	DButtMaintenance.log("STAGE ----- STAGE")
@@ -318,6 +317,7 @@ Event StageStart(int threadID, bool HasPlayer)
 		SslBaseAnimation animation = thread.Animation
 		Actor[] actorList = thread.Positions
 		Actor primaryActor
+			
 			int i = actorList.length
 			while i > 0	
 				i -= 1
@@ -326,12 +326,12 @@ Event StageStart(int threadID, bool HasPlayer)
 		primaryActor = actorList[0]
 		primaryActor.removeSpell(DButtConfig.DButt_OralSound)
 		primaryActor.removeSpell(DButtConfig.DButt_AnalSound)
-
+		Int Slot = DButtActor.isRegistered(primaryActor)
 		DButtConfig.debugAnimCurrentAnim = animation.Name
 		DButtConfig.debugAnimCurrentStage = currentStage	
 
 		;ORAL SOUNDS
-		if actorList.length>1
+		if actorList.length>1 && DButtConfig.oralSoundSupport==true
 			if SexLab.GetGender(actorList[1]) == 0 || actorList[1].IsEquipped(DButtConfig.SexLabCalypsStrapon)
 				String path = "DeviousButt/blowjobAnimsDB_"+DButtMain.getJsonVersion()+".json";		
 				JsonUtil.Load(path)		
@@ -347,12 +347,16 @@ Event StageStart(int threadID, bool HasPlayer)
 		endif
 		
 		;FART AND PISS
-		if actorList.length>1
+		if actorList.length>1 && DButtConfig.facefartSoundSupport==true
 			int fartSlutSlot = DButtActor.isRegistered(primaryActor)
 			if fartSlutSlot >= 0
 				String path = "DeviousButt/facedomAnimsDB_"+DButtMain.getJsonVersion()+".json";		
 				JsonUtil.Load(path)
 				int[] list = JsonUtil.IntListToArray(path, animation.Name)
+				if currentStage>=2 && list[(currentStage - 2)] == 1 && list[(currentStage - 1)] == 0 && Slot>=0
+					
+					DButtActor.npc_stored[Slot]=0
+				endif
 				if list.length>0 && list[(currentStage - 1)] == 1
 					Debug.notification("Oh, no i feel preasure!")
 					primaryActor.addSpell(DButtConfig.DButt_AnalSound,false)

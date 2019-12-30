@@ -70,6 +70,7 @@ endFunction
 
 function update28()
 	DButtConfig.SLSOusing = false
+	DButtConfig.facefartSoundSupport = true
 endFunction
 
 function update27()

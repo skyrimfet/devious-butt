@@ -67,10 +67,21 @@ function storeAnimDebug(String type, String name, String stage)
 	
 	String path = "DeviousButt/"+type+"_debug_capture_DB_.json";
 	JsonUtil.Load(path)
-	
-	JsonUtil.IntListAdd(path, name+"["+stage+"]", 1, false)
+	int[] list = JsonUtil.IntListToArray(path, name)
+	if list.length == 0
+	int i = 16
+	while i > 0	
+		i -= 1
+		JsonUtil.IntListAdd(path, name, 0, true)
+	endwhile
+	endif
+	int index = stage as int 
+	;debug.messagebox(index)
+	JsonUtil.IntListSet(path,name,index - 1,1)
+	;JsonUtil.IntListAdd(path, name+"["+stage+"]", 1, false)
 	JsonUtil.Save(path)
-	debug.messagebox("DButt DEBUG: STORED!")
+	Game.ShakeCamera(afStrength = 2,afDuration = 0.2)
+	;debug.messagebox("DButt DEBUG: STORED!")
 endfunction
 
 Event OnKeyDown(Int KeyCode)

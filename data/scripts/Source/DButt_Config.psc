@@ -58,6 +58,7 @@ bool Property enableFood Auto
 bool Property npcReact Auto
 bool Property playerBreak Auto
 bool Property oralSoundSupport Auto
+bool Property facefartSoundSupport Auto
 
 Int Property scanerRange Auto
 bool Property enableBadluck Auto
