@@ -4,7 +4,10 @@ DButt_Maintenance Property DButtMaintenance Auto
 DButt_Config      Property DButtConfig      Auto
 DButt_Actor       Property DButtActor      Auto
 DButt_Scaner	Property DButtScaner	Auto
+DButt_ModCore	Property DButtModCore Auto
 Actor[] actors
+slaUtilScr Property Aroused Auto
+
 Faction Property SexLabAnimatingFaction Auto
 
 Event OnEffectStart(Actor akTarget, Actor akCaster)
@@ -22,23 +25,33 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 
 			if actors[i].IsHostileToActor(DButtConfig.playerRef)==false &&  actors[i].IsInCombat() == false
 				if DButtConfig.allowedRaces.find(actors[i].getRace()) > -1 && akTarget.HasLOS(actors[i])
-					if actors[i].GetActorBase().GetSex() == 0
-						int s = DButtConfig.skyrimFetPumpcrowdeventshame_male.play(actors[i])
+					if DButtModCore.getFartFanFaction(actors[i],Utility.randomInt(0,8))<5
+						if actors[i].GetActorBase().GetSex() == 0
+							int s = DButtConfig.skyrimFetPumpcrowdeventshame_male.play(actors[i])
+						else
+							int s = DButtConfig.skyrimFetPumpcrowdeventshame_female.play(actors[i])
+						endif
+						actors[i].SetLookAt(akTarget)
+						if (actors[i].GetSitState() == 0 && actors[i].IsInFaction(SexLabAnimatingFaction)==false && actors[i].IsOnMount()==false)
+							int randAnim = Utility.randomInt(0,4)
+							if randAnim<=2
+								debug.SendAnimationEvent(actors[i],"IdleLaugh")
+							endIf
+							if randAnim==3
+								debug.SendAnimationEvent(actors[i],"IdleApplaud2")
+							endif
+							if randAnim==4
+								debug.SendAnimationEvent(actors[i],"IdleApplaud3")
+							endif
+						endif
+						float arousalWeight =  Aroused.GetActorExposure(actors[i]) as float
+						arousalWeight = arousalWeight + 10
+						Aroused.SetActorExposure(actors[i], arousalWeight as Int)
 					else
-						int s = DButtConfig.skyrimFetPumpcrowdeventshame_female.play(actors[i])
-					endif
-					actors[i].SetLookAt(akTarget)
-					if (actors[i].GetSitState() == 0 && actors[i].IsInFaction(SexLabAnimatingFaction)==false && actors[i].IsOnMount()==false)
-						int randAnim = Utility.randomInt(0,4)
-						if randAnim<=2
-							debug.SendAnimationEvent(actors[i],"IdleLaugh")
-						endIf
-						if randAnim==3
-							debug.SendAnimationEvent(actors[i],"IdleApplaud2")
-						endif
-						if randAnim==4
-							debug.SendAnimationEvent(actors[i],"IdleApplaud3")
-						endif
+						;arousal stim
+						float arousalWeight =  Aroused.GetActorExposure(actors[i]) as float
+						arousalWeight = arousalWeight - (10 * (10 - DButtModCore.getFartFanFaction(actors[i])))
+						Aroused.SetActorExposure(actors[i], arousalWeight as Int)
 					endif
 				endIf
 			endif

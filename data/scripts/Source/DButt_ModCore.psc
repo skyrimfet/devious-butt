@@ -283,7 +283,7 @@ endFunction
 Event AnimationEnd(int threadID, bool HasPlayer)
 	DButtConfig.debugAnimCurrentAnim = ""
 	if HasPlayer
-		DButtConfig.DButtConfig.usingSexlabThread = -1
+		DButtConfig.usingSexlabThread = -1
 	endif
 	SslThreadController thread = SexLab.GetController(threadID)
 	Actor[] actorList = thread.Positions
@@ -423,3 +423,34 @@ DButtMaintenance.log("seex seex seex:"+i)
  
 endEvent
 
+
+function modFartFanFaction(Actor acActor,int mod = 0,int addIfnotIn = -1)
+	int current = getFartFanFaction(acActor,addIfnotIn)
+	if current == -1 
+		return
+	endif
+	setFartFanFaction(acActor,current+mod)
+endFunction
+
+int function getFartFanFaction(Actor acActor,int addIfnotIn = -1)
+	if acActor.IsInFaction(DButtConfig.dbuttfartfanFaction)
+		return acActor.getFactionRank(DButtConfig.dbuttfartfanFaction)
+	endIf
+	if addIfnotIn >= 0 
+		setFartFanFaction(acActor,addIfnotIn)
+		return addIfnotIn
+	endIf
+	if addIfnotIn == -1
+		return -1
+	endIf
+endFunction
+
+function setFartFanFaction(Actor acActor, Int rank)
+if rank<0
+	rank = 0
+endif
+if rank > 10
+	rank = 10
+endif
+	acActor.SetFactionRank(DButtConfig.dbuttfartfanFaction, rank)
+endFunction

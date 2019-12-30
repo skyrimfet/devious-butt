@@ -3,6 +3,7 @@ Scriptname DButtAnalSoundEffect extends activemagiceffect
 DButt_Config	Property DButtConfig		Auto
 DButt_Actor		Property	DButtActor Auto
 DButt_Player Property DButtPlayer Auto
+DButt_ModCore	Property DButtModCore Auto
 SexLabFramework Property SexLab Auto
 Actor akActor
 
@@ -20,8 +21,8 @@ Event OnUpdate()
 	if (isWorking==false)
 		return
 	endif
-	DButtActor.addGas(fartSlut,Utility.randomInt(15,60))
-	if DButtActor.tryToFart(fartSlut,50)==false
+	DButtActor.addGas(fartSlut,Utility.randomInt(5,60))
+	if DButtActor.tryToFart(fartSlut,Utility.randomInt(1,50))==false
 		RegisterForSingleUpdate(Utility.randomInt(2,6) as float)
 		DButtPlayer.playGurgle(fartSlut)
 	else
@@ -30,8 +31,11 @@ Event OnUpdate()
 			sslActorAlias[] actorAlias = thread.ActorAlias
 			int enjoyment = actorAlias[1].GetFullEnjoyment()
 			Actor[] actorList = thread.Positions
-			actorAlias[1].BonusEnjoyment(actorList[1] ,200)
-			actorAlias[0].BonusEnjoyment(actorList[0] ,200)
+			int rank =  DButtModCore.getFartFanFaction(actorList[1],Utility.randomInt(2,10))
+			
+			actorAlias[1].BonusEnjoyment(actorList[1] , (-50 + (10 * rank ) ) * 4  )
+			actorAlias[0].BonusEnjoyment(actorList[0] ,-200)
+			
 			;sslActorAlias actorAlias
 		endif
 		self.dispel()

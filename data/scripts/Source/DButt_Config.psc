@@ -152,3 +152,5 @@ bool Property separateOrgasmPack auto
 bool Property dldiaper auto
 
 float Property ScanerModificator Auto
+
+Faction Property dbuttfartfanFaction Auto
