@@ -358,7 +358,7 @@ Event StageStart(int threadID, bool HasPlayer)
 					DButtActor.npc_stored[Slot]=0
 				endif
 				if list.length>0 && list[(currentStage - 1)] == 1
-					Debug.notification("Oh, no i feel preasure!")
+					Debug.notification("Oh no! I feel pressure!")
 					primaryActor.addSpell(DButtConfig.DButt_AnalSound,false)
 				endif
 			endif
