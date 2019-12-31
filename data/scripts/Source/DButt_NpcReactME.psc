@@ -23,7 +23,7 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 
 			if actors[i].IsHostileToActor(DButtConfig.playerRef)==false &&  actors[i].IsInCombat() == false
 				if DButtConfig.allowedRaces.find(actors[i].getRace()) > -1 && akTarget.HasLOS(actors[i])
-					if DButtModCore.getFartFanFaction(actors[i],Utility.randomInt(0,10))<=5
+					if DButtModCore.getFartFanFaction(actors[i],Utility.randomInt(0,10))<=5 && actors[i].IsInFaction(DButtConfig.dbuttsexlabanimationFaction)==false
 						if actors[i].GetActorBase().GetSex() == 0
 							int s = DButtConfig.skyrimFetPumpcrowdeventshame_male.play(actors[i])
 						else
