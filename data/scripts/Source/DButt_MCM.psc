@@ -139,7 +139,11 @@ Event OnPageReset(string page)
 		gasProductionSpeed = AddMenuOption("Global speed modifier", speedString[DButtConfig.gasProductionSpeed as int])
 
 		gasProbLevel = AddMenuOption("Fart difficulity", levelString[DButtConfig.gasProbLevel as int])
-
+		AddEmptyOption()
+		painfulHold = AddToggleOption("Hold fart minigame", DButtConfig.painfulHold)
+		if (DButtConfig.painfulHold==true)
+		_keymapOID_K3 = AddKeyMapOption("Try tighten the sphincter", DButtConfig.keyTryToStop)
+		endif
 	endIf
 	
 	if (page == "Urine settings")
@@ -227,12 +231,19 @@ event OnOptionKeyMapChange(int a_option, int a_keyCode, string a_conflictControl
 		DButtConfig.keyCaptureFaceSitAnimStage = a_keyCode
 		SetKeymapOptionValue(a_option, a_keyCode)
 	endIf
+	
+	if (a_option == _keymapOID_K3)
+		DButtConfig.keyTryToStop = a_keyCode
+		SetKeymapOptionValue(a_option, a_keyCode)
+	endif
 endEvent
 
 
 int _keymapOID_K
 int _keymapOID_K1
 int _keymapOID_K2
+int _keymapOID_K3
+
 
 
 Event OnOptionSelect(Int Menu)
@@ -426,6 +437,8 @@ Event OnOptionSelect(Int Menu)
 		endIf
 		SetToggleOptionValue(Menu,  DButtConfig.effectOnArousal)
 	endIf
+	
+	
 	if Menu == enableFood
 		if  DButtConfig.enableFood == true
 			 DButtConfig.enableFood = false			
@@ -433,6 +446,16 @@ Event OnOptionSelect(Int Menu)
 			 DButtConfig.enableFood = true
 		endIf
 		SetToggleOptionValue(Menu,  DButtConfig.enableFood)
+	endIf
+	
+	if Menu == painfulHold
+		if  DButtConfig.painfulHold == true
+			 DButtConfig.painfulHold = false			
+		else
+			 DButtConfig.painfulHold = true
+		endIf
+		SetToggleOptionValue(Menu,  DButtConfig.painfulHold)
+		 ForcePageReset()
 	endIf
 
 	
@@ -743,11 +766,12 @@ int npcReact
 
 int logToFile
 int logToConsole
+int painfulHold
 
 int debugAnimations
 
 int enableUrine
-
+int keyTryToStop
 int painVolume
 int peeVolume
 int waterVolume

@@ -123,8 +123,21 @@ function playPissRelief(int slot)
 	playSound(slot, DButtConfig.SexLabVoiceFemale01Mild, soundvolume)
 endfunction
 
+function playCalmAlert(int slot)
+	playSound(slot, DButtConfig.DButt_calmAlert,(DButtConfig.painVolume as float/100) as float)
+endfunction	
+
 function playWater(int slot)
 	playSound(slot, DButtConfig.skyrimFetPumpwater,(DButtConfig.waterVolume as float/100) as float)
+endfunction	
+
+function playTryToHold(int slot)
+	playSound(slot, DButtConfig.DButt_TryToHold,(DButtConfig.painVolume as float/100) as float)
+endfunction	
+
+function playTryToHoldHard(int slot)
+
+	playSound(slot, DButtConfig.DButt_TryToHoldHard,(DButtConfig.painVolume as float/100) as float)
 endfunction	
 
 function playPainLow(int slot)

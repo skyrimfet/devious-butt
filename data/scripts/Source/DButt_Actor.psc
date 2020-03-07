@@ -16,7 +16,7 @@ Float[] Property npc_hole Auto
 Float[] Property npc_urine Auto
 
 Int[] Property npc_badluck_calmdown Auto
-
+Int[] Property npc_trytoholdgas_calmdown Auto
 
 Float[] Property npc_butt_tracker Auto
 Float[] Property npc_belly_tracker Auto
@@ -333,8 +333,36 @@ bool function tryToUrinate(int Slot, float extraProb = 0.0, bool ignoreCatheter 
 endFunction
 
 bool function tryToFart(int Slot,float extraProb = 0.0)
+	
+	float rebased = npc_stored[Slot] - DButtConfig.gasSafeLevel
+	float part = (100 - DButtConfig.gasSafeLevel ) / 3
 
-
+	if npc_trytoholdgas_calmdown[Slot]>0		
+		npc_trytoholdgas_calmdown[Slot] = npc_trytoholdgas_calmdown[Slot] - 1
+		;alert only if is some gas
+		if npc_trytoholdgas_calmdown[Slot] == 1 && rebased > 0
+			DButtPlayer.playCalmAlert(Slot)
+		endif
+	endif	
+	if npc_trytoholdgas_calmdown[Slot]<0
+		npc_trytoholdgas_calmdown[Slot] = npc_trytoholdgas_calmdown[Slot] + 1
+		debug.notification("DB"+npc_trytoholdgas_calmdown[Slot])
+	endif
+	
+	;if DButtConfig.painfulHold == true && (npc_trytoholdgas_calmdown[Slot]>0 || (DButtConfig.zad == true && npc_ref[Slot].WornHasKeyword(DButtConfig.zad_DeviousPlugAnal)))
+	;	DButtMaintenance.log("PLUG FART HOLD: STORED " + npc_stored[Slot])
+	;	if Utility.RandomInt(0,10)==0 
+	;		if rebased < part
+	;			DButtPlayer.playPainLow(Slot)
+	;		endif
+	;		if rebased >=part && rebased <part * 2
+	;			DButtPlayer.playPainMed(Slot)
+	;		endif
+	;		if rebased >=part * 2
+	;			DButtPlayer.playPainHeight(Slot)
+	;		endif
+	;	endif
+	;endif
 
 	;over safe limit? 
 	if npc_stored[Slot] < DButtConfig.gasSafeLevel
@@ -345,6 +373,7 @@ bool function tryToFart(int Slot,float extraProb = 0.0)
 		if Utility.RandomInt(1, 100) <= DButtConfig.gurgleProb
 			DButtPlayer.playGurgle(Slot)
 		endif
+
 		
 		
 		;return false
@@ -405,11 +434,15 @@ bool function tryToFart(int Slot,float extraProb = 0.0)
 	;100 - 20 = 80 [80/3 = 27]
 	
 
-	float rebased = npc_stored[Slot] - DButtConfig.gasSafeLevel
-	float part = (100 - DButtConfig.gasSafeLevel ) / 3
+
+
+	
+
 	
 	if DButtConfig.zad == true && npc_ref[Slot].WornHasKeyword(DButtConfig.zad_DeviousPlugAnal)
-		if  npc_stored[Slot] >= 100 && Utility.RandomInt(0,5)==0
+	
+		
+		if npc_stored[Slot] >= 100 && Utility.RandomInt(0,5)==0
 			DButtPlayer.playFartPlugFinal(Slot)
 			if DButtConfig.effectOnArousal == true
 				float fvalue =  Aroused.GetActorExposure(npc_ref[Slot]) as float
@@ -444,6 +477,15 @@ bool function tryToFart(int Slot,float extraProb = 0.0)
 		endif
 		return false
 	endif
+	
+
+	
+	if DButtConfig.painfulHold == true && (npc_trytoholdgas_calmdown[Slot]>0 || (DButtConfig.zad == true && npc_ref[Slot].WornHasKeyword(DButtConfig.zad_DeviousPlugAnal)))
+		
+		return false
+	endif
+	
+	
 	
 	if  npc_stored[Slot] >= 100
 		DButtConfig.ScanerModificator = 1.0

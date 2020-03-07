@@ -62,11 +62,26 @@ function update()
 	if lastVersion < 2.8
 		update28()	
 	endIf
+	if lastVersion < 2.9
+		update29()	
+	endIf
 	DButtConfig.lastKnownGameVersion = currentVersion
 	always()
 	DButtModCore.resetAllWhatImportant()
 endFunction
 
+function update29()
+	DButtConfig.painfulHold = true
+	DButtConfig.keyTryToStop = 0
+	
+	DButtActor.npc_trytoholdgas_calmdown = new Int[32]
+	int i = 0
+	while i <= 31
+		log("Prepare slots: "+i+"...")		
+		DButtActor.npc_trytoholdgas_calmdown[i] = 0
+		i = i + 1		
+	endWhile
+endFunction
 
 function update28()
 	DButtConfig.SLSOusing = false

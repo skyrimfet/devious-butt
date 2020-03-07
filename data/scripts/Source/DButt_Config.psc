@@ -5,6 +5,8 @@ Int Property keyCaptureBlowJobAnimStage Auto
 Int Property keyCaptureFaceSitAnimStage Auto
 Int Property usingSexlabThread Auto
 
+Int Property keyTryToStop Auto
+
 String Property debugAnimCurrentAnim Auto
 String Property debugAnimCurrentStage Auto
 
@@ -12,6 +14,8 @@ Armor Property SexLabCalypsStrapon Auto
 
 Float Property checkInterval Auto
 Float Property lastKnownGameVersion Auto
+
+bool Property painfulHold Auto
 
 Bool Property logToFile Auto
 Bool Property logToConsole Auto
@@ -120,6 +124,9 @@ Sound Property DButt_fartSmall Auto
 Sound Property DButt_fartMega Auto
 Sound Property DButt_Gurgle Auto
 Sound Property DButt_PreFart Auto
+Sound Property DButt_TryToHold Auto
+Sound Property DButt_TryToHoldHard Auto
+Sound Property DButt_calmAlert Auto
 
 Sound Property SexLabVoiceFemale01Mild Auto
 Sound Property skyrimFetPumppiss Auto

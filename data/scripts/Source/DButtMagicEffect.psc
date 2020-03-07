@@ -51,6 +51,7 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 	RegisterForKey(DButtConfig.keyReliefUrine)
 	RegisterForKey(DButtConfig.keyCaptureBlowJobAnimStage)
 	RegisterForKey(DButtConfig.keyCaptureFaceSitAnimStage)
+	RegisterForKey(DButtConfig.keyTryToStop)
 EndEvent
 
 Event OnEffectFinish(Actor acActor, Actor akCaster)
@@ -92,6 +93,30 @@ Event OnKeyDown(Int KeyCode)
 		endif
 		if KeyCode ==  DButtConfig.keyCaptureFaceSitAnimStage
 			storeAnimDebug("face",DButtConfig.debugAnimCurrentAnim,DButtConfig.debugAnimCurrentStage)
+		endif
+		
+		
+		if DButtConfig.painfulHold == true && KeyCode == DButtConfig.keyTryToStop && DButtActor.npc_trytoholdgas_calmdown[Slot]>=0 
+			if DButtActor.npc_ref[Slot].WornHasKeyword(DButtConfig.zad_DeviousPlugAnal)==false 
+				if DButtActor.npc_trytoholdgas_calmdown[Slot]<=1
+					DButtActor.npc_trytoholdgas_calmdown[Slot] = DButtActor.npc_trytoholdgas_calmdown[Slot] + Utility.randomInt(5,15)
+				else
+					DButtActor.npc_trytoholdgas_calmdown[Slot] = DButtActor.npc_trytoholdgas_calmdown[Slot] + Utility.randomInt(-2,10)
+				endif
+				;debug.notification("add force: " + DButtActor.npc_trytoholdgas_calmdown[Slot])
+				if DButtActor.npc_trytoholdgas_calmdown[Slot]<15
+					DButtPlayer.playTryToHold(Slot)
+				else
+					DButtPlayer.playTryToHoldHard(Slot)
+				endif
+				
+				if DButtActor.npc_trytoholdgas_calmdown[Slot]>15
+					if Utility.RandomInt(0,3)==0
+						DButtActor.npc_trytoholdgas_calmdown[Slot] = -2 * DButtActor.npc_trytoholdgas_calmdown[Slot]
+					endif
+				endif
+			endif
+			return
 		endif
 		
 		if KeyCode == DButtConfig.keyReliefUrine
